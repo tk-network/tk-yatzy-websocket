@@ -37,23 +37,9 @@ wss.on("connection", ws => {
         data = JSON.parse(data);
         const handler = new WebSocketHandler(wss, ws, data.data);
 
-        switch(data.action) {
-            case "setUsername":
-                return handler.setUsername();
-            case "setRoom":
-                return handler.setRoom();
-            case "createRoom":
-                return handler.createRoom();
-            case "roleTheCube":
-                return handler.roleTheCube();
-            case "setField":
-                return handler.setField();
-        }
-        /*
-        wss.clients.forEach(function(client) {
-            client.send(data.toString());
-        });
-        */
+        if(!(data.action in handler)) return this.wss.send(this.ws, { action: "error", data: "Aktion wurde nicht gefunden!" });
+
+        handler[data.action]();
     });
     // handling what to do when clients disconnects from server
     ws.on("close", () => {
