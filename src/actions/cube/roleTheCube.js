@@ -1,9 +1,13 @@
 const moment = require("moment");
+const rules = require("./rules");
 
 module.exports = function() {
     const room = this.wss.rooms.find((room) => room.members.some(member => member.user == this.ws.id));
     let data = {};
 
+    if(Object.keys(rules.length) * room.members.length == room.rounds.filter(round => round.round == room.round).length) {
+        return this.wss.send(this.ws, { action: "error", data: "Die Runde ist bereits zuende!" });
+    }
     if(room.activeUser != this.ws.id) return this.wss.send(this.ws, { action: "error", data: "Du bist nicht dran!" });
     if(room.numberOfThrows == 3) return this.wss.send(this.ws, { action: "error", data: "Maximale Anzahl an Würfen in dieser Runde ist erreicht!" });
 
