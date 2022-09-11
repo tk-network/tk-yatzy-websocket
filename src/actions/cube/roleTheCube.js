@@ -5,7 +5,7 @@ module.exports = function() {
     const room = this.wss.rooms.find((room) => room.members.some(member => member.user == this.ws.id));
     let data = {};
 
-    if(Object.keys(rules.length) * room.members.length == room.rounds.filter(round => round.round == room.round).length) {
+    if(Object.keys(rules).length * room.members.length == room.rounds.filter(round => round.round == room.round && round.fieldId).length) {
         return this.wss.send(this.ws, { action: "error", data: "Die Runde ist bereits zuende!" });
     }
     if(room.activeUser != this.ws.id) return this.wss.send(this.ws, { action: "error", data: "Du bist nicht dran!" });
