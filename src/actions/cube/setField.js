@@ -15,4 +15,8 @@ module.exports = function() {
     room.numberOfThrows = 0;
 
     this.broadcastRoom(room.id);
+
+    if(Object.keys(rules).length * room.members.length == room.rounds.filter(round => round.round == room.round && round.fieldId).length) {
+        this.broadcast("modal", { component: "winnersPodium", data: room.rounds.filter(r => r.round == room.round) }, room.id)
+    }
 }
