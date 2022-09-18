@@ -1,6 +1,5 @@
 // Importing the required modules
 const WebSocketServer = require("ws");
-const handler = require("./src/actions");
 const WebSocketHandler = require("./src/actions");
  
 // Creating a new websocket server
