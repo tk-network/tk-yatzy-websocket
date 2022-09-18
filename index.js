@@ -24,7 +24,7 @@ wss.cubeSpinTime = 300;
  
 // Creating connection using websocket
 wss.on("connection", ws => {
-    ws.id = wss.getUniqueID();
+    ws.id = ws._protocol != "undefined" && ws._protocol != "true" ? ws._protocol : wss.getUniqueID();
     console.log(`new client connected (${ws.id})`);
 
     wss.send(ws, { action: "setup", data: {
@@ -41,6 +41,7 @@ wss.on("connection", ws => {
 
         handler[data.action]();
     });
+
     // handling what to do when clients disconnects from server
     ws.on("close", () => {
         const handler = new WebSocketHandler(wss, ws, null);
@@ -65,6 +66,7 @@ wss.on("connection", ws => {
 
         console.log("the client has connected");
     });
+
     // handling client connection error
     ws.onerror = function () {
         console.log("Some Error occurred")
