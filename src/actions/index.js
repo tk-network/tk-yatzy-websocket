@@ -6,6 +6,7 @@ class handler {
     }
     // global
     broadcast = require("./global/broadcast");
+    message = require("./global/message");
 
     // user
     setUsername = require("./user/setUsername");

@@ -37,7 +37,7 @@ wss.on("connection", ws => {
         data = JSON.parse(data);
         const handler = new WebSocketHandler(wss, ws, data.data);
 
-        if(!(data.action in handler)) return this.wss.send(this.ws, { action: "error", data: "Aktion wurde nicht gefunden!" });
+        if(!(data.action in handler)) return this.message("error", "Fehler!", "Aktion wurde nicht gefunden!");
 
         handler[data.action]();
     });

@@ -6,10 +6,10 @@ module.exports = function() {
     let data = {};
 
     if(Object.keys(rules).length * room.members.length == room.rounds.filter(round => round.round == room.round && round.fieldId).length) {
-        return this.wss.send(this.ws, { action: "error", data: "Die Runde ist bereits zuende!" });
+        return this.message("error", "Fehler!", "Die Runde ist bereits zuende!");
     }
-    if(room.activeUser != this.ws.id) return this.wss.send(this.ws, { action: "error", data: "Du bist nicht dran!" });
-    if(room.numberOfThrows == 3) return this.wss.send(this.ws, { action: "error", data: "Maximale Anzahl an Würfen in dieser Runde ist erreicht!" });
+    if(room.activeUser != this.ws.id) return this.message("error", "Fehler!", "Du bist nicht dran!");
+    if(room.numberOfThrows == 3) return this.message("error", "Fehler!", "Maximale Anzahl an Würfen in dieser Runde ist erreicht!");
 
     if(room.numberOfThrows == 0) {
         room.rounds.push({
