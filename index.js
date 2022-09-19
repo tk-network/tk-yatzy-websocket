@@ -23,7 +23,8 @@ wss.cubeSpinTime = 300;
  
 // Creating connection using websocket
 wss.on("connection", ws => {
-    ws.id = ws._protocol != "undefined" && ws._protocol != "true" ? ws._protocol : wss.getUniqueID();
+    console.log(ws._protocol)
+    ws.id = ws._protocol != "undefined" && ws._protocol != "true" && ws._protocol ? ws._protocol : wss.getUniqueID();
     console.log(`new client connected (${ws.id})`);
 
     wss.send(ws, { action: "setup", data: {
