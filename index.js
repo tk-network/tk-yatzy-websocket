@@ -1,6 +1,7 @@
 // Importing the required modules
 const WebSocketServer = require("ws");
 const WebSocketHandler = require("./src/actions");
+const moment = require("moment");
  
 // Creating a new websocket server
 const port = process.env.PLATTFORM == "production" ? 8091 : 8080;
@@ -23,7 +24,6 @@ wss.cubeSpinTime = 300;
  
 // Creating connection using websocket
 wss.on("connection", ws => {
-    console.log(ws._protocol)
     ws.id = ws._protocol != "undefined" && ws._protocol != "true" && ws._protocol ? ws._protocol : wss.getUniqueID();
     console.log(`new client connected (${ws.id})`);
 
@@ -54,11 +54,10 @@ wss.on("connection", ws => {
                 handler.broadcastRoom(room.id)
             }
 
-            // Raum löschen, wenn keine teilnehmer mehr drin sind
-            if(!room.members.length) return object.splice(index, 1);
+            room.lastDisconnect = moment();
 
             // Neuen Moderator auswählen
-            if(room.presenter == ws.id) {
+            if(room.presenter == ws.id && room.members.length) {
                 room.presenter = room.members[0].user;
                 handler.broadcastRoom(room.id)
             }
@@ -72,4 +71,7 @@ wss.on("connection", ws => {
         console.log("Some Error occurred")
     }
 });
+
+require("./src/automation")(wss);
+
 console.log("The WebSocket server is running on port 8080");

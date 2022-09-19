@@ -1,8 +1,10 @@
-const schedule = require("node-schedule");
-const jobs = require("./jobs");
+module.exports = (wss) => {
+    const schedule = require("node-schedule");
+    const jobs = require("./jobs");
 
-schedule.scheduleJob("1 * * * *", () => {
-    jobs.forEach(job => {
-        job();
+    schedule.scheduleJob("2 * * * *", () => {
+        jobs.forEach(job => {
+            job(wss);
+        });
     });
-});
+}

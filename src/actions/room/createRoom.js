@@ -17,6 +17,7 @@ module.exports = function() {
         rounds: [],
         activeUser: this.ws.id,
         numberOfThrows: 0,
+        lastDisconnect: null,
     });
 
     this.wss.send(this.ws, {
